@@ -16,9 +16,10 @@ TOTAL_NECROMANCER = 'SELECT * FROM charactercreator_necromancer;'
 TOTAL_THIEF = 'SELECT * FROM charactercreator_thief;'
 TOTAL_ITEMS = 'SELECT * FROM armory_item;'
 TOTAL_WEAPONS = 'SELECT * FROM armory_weapon;'
-ITEM_PER_CHAR = """SELECT item_id FROM armory_item, 
-charactercreator_character_inventory WHERE item_id = name and 
-character_id BETWEEN 1 and 20;"""
+ITEM_PER_CHAR = """SELECT cc.character_id, cc.name, ai.item_id,
+ai.name FROM charactercreator_character AS cc, armory_item AS ai,
+charactercreator_character_inventory AS cci WHERE cc.character_id =
+cci.character_id AND ai.item_id = cci.item_id;"""
 
 if __name__ == '__main__':
     conn = connect_to_db()
@@ -41,4 +42,5 @@ if __name__ == '__main__':
     print("Amount of Items that are weapons:" + 
         str(len(results_weapons)) + ", 137 are not")
     results_item_per = execute_query(curs, ITEM_PER_CHAR)
+    print(results_item_per[:21])
    
